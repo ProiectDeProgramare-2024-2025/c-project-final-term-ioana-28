@@ -8,6 +8,13 @@
 #define MAX_SPECIALIZATIONS 5
 #define MAX_APPLICATIONS 100
 
+#define RED     "\033[31m"
+#define GREEN   "\033[32m"
+#define YELLOW  "\033[33m"
+#define MAGENTA "\033[35m"
+#define CYAN    "\033[36m"
+#define RESET   "\033[0m"
+
 
 /// Structures for University, Faculty, Specialization, and Application
 typedef struct {
@@ -131,10 +138,10 @@ void uni()
 
 
     getchar();
-    printf("-----Applying to a University----- \n\n");
+    printf("----------Applying to a University---------- \n\n");
 
     ///User can apply to univeristy
-    printf("To what university would you like to apply to? \n");
+    printf(CYAN "To what university would you like to apply to?" RESET "\n");
     for (int i=0; i<uni_nr; i++)
     {
         printf("%d. %s\n", i+1, univ[i].name);
@@ -146,7 +153,7 @@ void uni()
     {
         do
         {
-            printf("     The university choice is invalid!\n");
+            printf(CYAN, "     The university choice is invalid!" RESET "\n");
             printf("     Select a valid university number: ");
             scanf("%d", &uni_choice);
         }while(uni_choice<1 && uni_choice>uni_nr);
@@ -167,7 +174,7 @@ void uni()
     {
         do
         {
-            printf("     The faculty choice is invalid!\n");
+            printf(CYAN "     The faculty choice is invalid!" RESET "\n");
             printf("     Select a valid faculty number: ");
             scanf("%d", &faculty_choice);
         }while(faculty_choice<1 && faculty_choice>selected_uni->faculty_nr);
@@ -188,7 +195,7 @@ void uni()
     {
         do
         {
-            printf("     The specialization choice is invalid!\n");
+            printf(CYAN "     The specialization choice is invalid!" RESET "\n");
             printf("     Select a valid specialization number: ");
             scanf("%d", &spec_choice);
 
@@ -209,7 +216,7 @@ void uni()
     append_application(univ, filename);
 
 
-    printf("\n Press ENTER to exit..." );
+    printf(RED "\n Press ENTER to exit..." RESET);
     getchar();
 
 }
@@ -227,7 +234,7 @@ void form(University *u, Faculty *faculty, Specialization *spec)
 
     char s[201]="";
     Application a;
-    printf("\n-----Enter the information about yourself-----\n");
+    printf(MAGENTA "\n-----Enter the information about yourself-----" RESET "\n");
     printf("Name: ");
     scanf("%s", a.first_name);
 
@@ -248,11 +255,11 @@ void form(University *u, Faculty *faculty, Specialization *spec)
     spec->app_count++;
 
 
-    printf("\n      Application successfully submitted to %s - %s - %s!\n", u->name, faculty->name, spec->name);
+    printf(GREEN"\n      Application successfully submitted to %s - %s - %s!" RESET "\n", u->name, faculty->name, spec->name);
 
     getchar();
     char c;
-    printf("\nWould you like to submit your application to another university? (y/n) ");
+    printf(CYAN "\nWould you like to submit your application to another university? (y/n) " RESET);
     scanf("%c", &c);
     if (c=='y')
     {
@@ -327,7 +334,7 @@ void form(University *u, Faculty *faculty, Specialization *spec)
             univ[uni_choice-1].faculties[faculty_choice-1].specializations[spec_choice-1].applications[univ[uni_choice-1].faculties[faculty_choice-1].specializations[spec_choice-1].app_count] = a;
             univ[uni_choice-1].faculties[faculty_choice-1].specializations[spec_choice-1].app_count++;
 
-            printf("\n Application successfully submitted to %s - %s - %s!\n", univ[uni_choice-1].name, univ[uni_choice-1].faculties[faculty_choice-1].name, univ[uni_choice-1].faculties[faculty_choice-1].specializations[spec_choice-1].name);
+            printf(GREEN "\n Application successfully submitted to %s - %s - %s!" RESET "\n", univ[uni_choice-1].name, univ[uni_choice-1].faculties[faculty_choice-1].name, univ[uni_choice-1].faculties[faculty_choice-1].specializations[spec_choice-1].name);
 
 
             getchar();
@@ -349,7 +356,7 @@ void applications(char path[])
     FILE * filePointer;
     filePointer = fopen("view_applications.csv", "r");
 
-    printf("-------------------------View applications-------------------------\n\n");
+    printf(YELLOW "-------------------------View applications-------------------------" RESET "\n\n");
 
     if ( filePointer == NULL )
     {
@@ -367,7 +374,8 @@ void applications(char path[])
         fclose(filePointer);
     }
 
-    printf("--------------------------------------------------------------------\n");
+    printf(YELLOW "--------------------------------------------------------------------" RESET "\n");
+    printf(RED "\n Press ENTER to exit..." RESET);
     getchar();
 }
 
@@ -540,7 +548,7 @@ void statistics(char path[]) {
     write_statistics_to_file(path);
     FILE * filePointer;
     filePointer = fopen("view_statistics.txt", "r");
-    printf("-------------------------View statistics----------------------------\n\n");
+    printf(YELLOW "-------------------------View statistics----------------------------" RESET "\n\n");
 
     if ( filePointer == NULL )
     {
@@ -558,7 +566,8 @@ void statistics(char path[]) {
         fclose(filePointer);
     }
 
-    printf("--------------------------------------------------------------------\n");
+    printf(YELLOW "--------------------------------------------------------------------" RESET "\n");
+    printf(RED "\n Press ENTER to exit..." RESET);
     getchar();
 }
 
@@ -588,7 +597,7 @@ void menu(int op)
             break;
         }
         default:
-            printf("EXIT!\n");
+            printf("\n" RED "EXIT!" RESET "\n");
     }
 }
 
@@ -598,7 +607,7 @@ int main()
     int option;
     do{
         header();
-        printf("Enter option: ");
+        printf(YELLOW "Enter option: " RESET);
         scanf("%d", &option);
         menu(option);
     } while(option > 0 && option <= 3);
